@@ -29,7 +29,7 @@ public class FHIRwriter {
     */
     void readIn(String fileExt) throws FileNotFoundException, IOException{
         ArrayList<String> tokens = new ArrayList<String>();
-        String Tags[] = {"npi", "nppes_provider_last_org_name", "nppes_provider_first_name", "nppes_provider_mi\n","nppes_credentials\n" ,
+        String[] Tags = {"npi", "nppes_provider_last_org_name", "nppes_provider_first_name", "nppes_provider_mi\n","nppes_credentials\n" ,
         "nppes_provider_gender\n","nppes_entity_code\n","nppes_provider_street1\n",
         "nppes_provider_street2\n","nppes_provider_city\n","nppes_provider_zip\n",
         "nppes_provider_state\n","nppes_provider_country\n" ,"provider_type\n",
