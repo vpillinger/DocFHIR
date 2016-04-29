@@ -88,27 +88,22 @@ public class Main
                 
                 try
                 {
-                    FileInputStream inputStream = new FileInputStream("\\docgraph\\Medicare-Physician-and-Other-Supplier-PUF-CY2012-head.txt");
+                    FileInputStream inputStream = new FileInputStream("\\docgraph\\Medicare-Physician-and-Other-Supplier-PUF-CY2012-head.txt"); //put filename here
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                     
                     String line;
                     while ((line = bufferedReader.readLine()) != null) // going to go through each line of the file
                     {
                         data = reader.processLine(line); // put a line into a DocData Element
-                        if(passedFirstIteration == false)
+                        if(passedFirstIteration == true && mapper.exists(data.get_NPI()) == false) //if we passed the first line and the NPI's don't match meaning we found a new doctor or first one
                         {
+                            printer.outputResource(mapper.getResource()); // before overriding, output the current resource to a file if there is one to print
                             mapper.createPractitioner(data); // mapper will use all fields for the practitioner
                         }
-                        else if(mapper.exists(data.get_NPI()) == true) // Current Resource has matching NPI
+                        else // the NPI's match so we keep adding observations to the practitioner resource
                         {
                             mapper.addAttributes(data); //having mapper add just the necessary fields to the practitioner
                         }
-                        else // NPI's don't match, move on to next resource
-                        {
-                            printer.outputResource(mapper.getResource()); // before overriding, output the current resource to a file.
-                            mapper.createPractitioner(data); // override old practitioner with a shiny new one
-                        }
-                        
                         
                         passedFirstIteration = true; // we now know there will always exist a resource from now until the end.
                     }
@@ -120,18 +115,6 @@ public class Main
                 {
                     System.out.println("File Not Found! IO Exception");
                 }
-                /*
-                try
-                {
-                    a.readIn("\\docgraph\\Medicare-Physician-and-Other-Supplier-PUF-CY2012-head.txt");
 
-                    //a.readIn("Users/khristianmorel/test.txt");
-
-                }
-                catch(IOException e)
-                {
-                    System.out.println("File not found");
-                }
-                */
     }
 }
