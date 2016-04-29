@@ -22,73 +22,8 @@ public class DocReader
     private ArrayList<String> tokens = new ArrayList<String>();
 
     /*
-    *reads in a file path and parses the information by commas and qoutes.
-    The information is split by a tokenizer and the elements are convert to 
-    strings.
-    
-    Insert information where the println is.
+    Takes in one line of the file and then parses it and loads it into the DocData object. Then returns the docData object for the Mapper to use later.
      */
-    void readIn(String fileExt) throws FileNotFoundException, IOException
-    {
-
-        String Tags[] =
-        {
-            "npi", "nppes_provider_last_org_name", "nppes_provider_first_name", "nppes_provider_mi\n", "nppes_credentials\n",
-            "nppes_provider_gender\n", "nppes_entity_code\n", "nppes_provider_street1\n",
-            "nppes_provider_street2\n", "nppes_provider_city\n", "nppes_provider_zip\n",
-            "nppes_provider_state\n", "nppes_provider_country\n", "provider_type\n",
-            "medicare_participation_indicator\n", "place_of_service\n", "hcpcs_code\n",
-            "hcpcs_description\n", "line_srvc_cnt\n", "bene_unique_cnt\n", "bene_day_srvc_cnt\n",
-            "average_Medicare_allowed_amt\n", "stdev_Medicare_allowed_amt\n", "average_submitted_chrg_amt\n",
-            "stdev_submitted_chrg_amt\n", "average_Medicare_payment_amt\n",
-            "stdev_Medicare_payment_amt"
-        };
-
-        try
-        {
-            FileInputStream inputStream = new FileInputStream(fileExt);
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(inputStream));
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null)
-            {
-                String[] tokes = line.split("\t");
-                for (int i = 0; i < (tokes.length); i++)
-                {
-                    //System.out.println(tokes[i]);
-                    tokens.add(tokes[i]);
-
-                }
-            }
-        } catch (FileNotFoundException e)
-        {
-            System.out.println("File Path Not Found");
-        } catch (IOException io)
-        {
-            System.out.println("File Path Not Found");
-        }
-        int testI = 0;
-        for (int i = 29; i < tokens.size(); i++)
-        {
-            System.out.print(Tags[testI] + ": " + tokens.get(i));
-            if (tokens.get(i).endsWith(" "))
-            {
-                testI++;
-                if (testI >= 27)
-                {
-                    testI = testI % 27;
-                }
-                System.out.print("\n" + Tags[testI] + ": No Data");
-            }
-            System.out.print("\n");
-            testI++;
-            if (testI >= 27)
-            {
-                testI = testI % 27;
-            }
-        }
-    }
     
     ArrayList<String> getFields()
     {
@@ -97,6 +32,7 @@ public class DocReader
     
     public DocData processLine(String line)
     {
+        tokens = new ArrayList <String>(); // re-initialize tokens to be empty, otherwise it keeps filling and we won't get the right data
         String[] tokes = line.split("\t"); // split our line into a string array
         for (int i = 0; i < tokes.length; i++)
         {
