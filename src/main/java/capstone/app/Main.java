@@ -22,99 +22,69 @@ public class Main
 {
     public static void main( String[] args )
     {
+    	
+    	DocFhir.convertDocGraphData("\\docgraph\\Medicare-Physician-and-Other-Supplier-PUF-CY2012-head.txt");
+
+    }
+    /**
+     * This method is copied example code, replace this with main for debugging import issues
+     */
+    private static void example(){
     	// Alternately, create a context for DSTU2
-		FhirContext ctx = FhirContext.forDstu2();
+ 		FhirContext ctx = FhirContext.forDstu2();
 
-		// The following is an example Patient resource
-		String msgString = "<Patient xmlns=\"http://hl7.org/fhir\">"
-			+ "<text><status value=\"generated\" /><div xmlns=\"http://www.w3.org/1999/xhtml\">John Cardinal</div></text>"
-			+ "<identifier><system value=\"http://orionhealth.com/mrn\" /><value value=\"PRP1660\" /></identifier>"
-			+ "<name><use value=\"official\" /><family value=\"Cardinal\" /><given value=\"John\" /></name>"
-			+ "<gender><coding><system value=\"http://hl7.org/fhir/v3/AdministrativeGender\" /><code value=\"M\" /></coding></gender>"
-			+ "<address><use value=\"home\" /><line value=\"2222 Home Street\" /></address><active value=\"true\" />"
-			+ "</Patient>";
+ 		// The following is an example Patient resource
+ 		String msgString = "<Patient xmlns=\"http://hl7.org/fhir\">"
+ 			+ "<text><status value=\"generated\" /><div xmlns=\"http://www.w3.org/1999/xhtml\">John Cardinal</div></text>"
+ 			+ "<identifier><system value=\"http://orionhealth.com/mrn\" /><value value=\"PRP1660\" /></identifier>"
+ 			+ "<name><use value=\"official\" /><family value=\"Cardinal\" /><given value=\"John\" /></name>"
+ 			+ "<gender><coding><system value=\"http://hl7.org/fhir/v3/AdministrativeGender\" /><code value=\"M\" /></coding></gender>"
+ 			+ "<address><use value=\"home\" /><line value=\"2222 Home Street\" /></address><active value=\"true\" />"
+ 			+ "</Patient>";
 
-		// The hapi context object is used to create a new XML parser
-		// instance. The parser can then be used to parse (or unmarshall) the
-		// string message into a Patient object
-		IParser parser = ctx.newXmlParser();
-		Patient patient = parser.parseResource(Patient.class, msgString);
+ 		// The hapi context object is used to create a new XML parser
+ 		// instance. The parser can then be used to parse (or unmarshall) the
+ 		// string message into a Patient object
+ 		IParser parser = ctx.newXmlParser();
+ 		Patient patient = parser.parseResource(Patient.class, msgString);
 
-		// The patient object has accessor methods to retrieve all of the
-		// data which has been parsed into the instance.
-		String patientId = patient.getIdentifier().get(0).getValue();
-		String familyName = patient.getName().get(0).getFamily().get(0).getValue();
-		String gender = patient.getGender();
+ 		// The patient object has accessor methods to retrieve all of the
+ 		// data which has been parsed into the instance.
+ 		String patientId = patient.getIdentifier().get(0).getValue();
+ 		String familyName = patient.getName().get(0).getFamily().get(0).getValue();
+ 		String gender = patient.getGender();
 
-		System.out.println(patientId); // PRP1660
-		System.out.println(familyName); // Cardinal
-		System.out.println(gender); // M
-		
+ 		System.out.println(patientId); // PRP1660
+ 		System.out.println(familyName); // Cardinal
+ 		System.out.println(gender); // M
+ 		
 
-		/**
-		 * FHIR model types in HAPI are simple POJOs. To create a new
-		 * one, invoke the default constructor and then
-		 * start populating values.
-		 */
-		Patient patient2 = new Patient();
-		 
-		// Add an MRN (a patient identifier)
-		IdentifierDt id = patient2.addIdentifier();
-		id.setSystem("http://example.com/fictitious-mrns");
-		id.setValue("MRN001");
-		 
-		// Add a name
-		HumanNameDt name = patient2.addName();
-		name.setUse(NameUseEnum.OFFICIAL);
-		name.addFamily("Tester");
-		name.addGiven("John");
-		name.addGiven("Q");
-                
-                
-                Composition comp= new Composition();
-                
-                Section sect= new Section();
-		 
-		// We can now use a parser to encode this resource into a string.
-		String encoded = ctx.newXmlParser().encodeResourceToString(patient2);
-		System.out.println(encoded);
-//-----------------------------------------------------------------------------------------------------------------------------------
-// Our Code Starts here, I left above code so we could still see the example stuff while we are still playing
-                DocReader reader = new DocReader();
-                FhirMapper mapper = new FhirMapper();
-                FhirPrinter printer = new FhirPrinter();
-                DocData data = null;
-                boolean passedFirstIteration = false;
-                
-                try
-                {
-                    FileInputStream inputStream = new FileInputStream("\\docgraph\\Medicare-Physician-and-Other-Supplier-PUF-CY2012-head.txt"); //put filename here
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) // going to go through each line of the file
-                    {
-                        data = reader.processLine(line); // put a line into a DocData Element
-                        if(passedFirstIteration == true && mapper.exists(data.get_NPI()) == false) //if we passed the first line and the NPI's don't match meaning we found a new doctor or first one
-                        {
-                            printer.outputResource(mapper.getResource()); // before overriding, output the current resource to a file if there is one to print
-                            mapper.createPractitioner(data); // mapper will use all fields for the practitioner
-                        }
-                        else // the NPI's match so we keep adding observations to the practitioner resource
-                        {
-                            mapper.addAttributes(data); //having mapper add just the necessary fields to the practitioner
-                        }
-                        
-                        passedFirstIteration = true; // we now know there will always exist a resource from now until the end.
-                    }
-                } catch (FileNotFoundException e)
-                {
-                    System.out.println("File Not Found! File Not Found Exception");
-                }
-                catch (IOException e)
-                {
-                    System.out.println("File Not Found! IO Exception");
-                }
-
+ 		/**
+ 		 * FHIR model types in HAPI are simple POJOs. To create a new
+ 		 * one, invoke the default constructor and then
+ 		 * start populating values.
+ 		 */
+ 		Patient patient2 = new Patient();
+ 		 
+ 		// Add an MRN (a patient identifier)
+ 		IdentifierDt id = patient2.addIdentifier();
+ 		id.setSystem("http://example.com/fictitious-mrns");
+ 		id.setValue("MRN001");
+ 		 
+ 		// Add a name
+ 		HumanNameDt name = patient2.addName();
+ 		name.setUse(NameUseEnum.OFFICIAL);
+ 		name.addFamily("Tester");
+ 		name.addGiven("John");
+ 		name.addGiven("Q");
+                 
+                 
+                 Composition comp= new Composition();
+                 
+                 Section sect= new Section();
+ 		 
+ 		// We can now use a parser to encode this resource into a string.
+ 		String encoded = ctx.newXmlParser().encodeResourceToString(patient2);
+ 		System.out.println(encoded);
     }
 }

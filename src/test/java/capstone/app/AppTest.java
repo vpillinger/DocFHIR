@@ -30,7 +30,7 @@ public class AppTest
     }
 
     /**
-     * Tests FHIRWriter when reading in data from medicare data to make sure it
+     * Tests DocReader when reading in data from medicare data to make sure it
      * gets 27 fields of data.
      *
      * @throws IOException
@@ -45,7 +45,7 @@ public class AppTest
     }
 
     /**
-     * Test FHIRWriter when reading in data from ha1c data to make sure it gets
+     * Test DocReader when reading in data from ha1c data to make sure it gets
      * 16 fields of data. 
      * Uncomment test once parser has been updated to read in this data.
      *
@@ -60,7 +60,7 @@ public class AppTest
 //        assertEquals(16,FW.getFields().size());
 //    }
     /**
-     * Test FHIRWriter when reading in data from medicare data to make
+     * Test DocReader when reading in data from medicare data to make
      * sure the data is read in the proper order.
      *
      * @throws IOException
