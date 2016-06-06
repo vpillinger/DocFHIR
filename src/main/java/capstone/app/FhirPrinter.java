@@ -13,7 +13,7 @@ import ca.uhn.fhir.model.dstu2.resource.Practitioner;
  */
 public class FhirPrinter 
 {
-    public void outputResource(Practitioner dr)
+    public void outputResource(Practitioner dr, String Filename)
     {
         // write resource to file
     }
