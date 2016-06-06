@@ -7,8 +7,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DocFhir {
+	
+	public static void convertDocGraphData(String in_filepath){
+		
+		convertDocGraphData(in_filepath, in_filepath + "-FHIR.xml");
+		
+	}
 
-	public static void convertDocGraphData(String filepath){
+	public static void convertDocGraphData(String in_filepath, String out_filepath){
 		DocReader reader = new DocReader();
         FhirMapper mapper = new FhirMapper();
         FhirPrinter printer = new FhirPrinter();
@@ -17,7 +23,7 @@ public class DocFhir {
         
         try
         {
-            FileInputStream inputStream = new FileInputStream(filepath); //put filename here
+            FileInputStream inputStream = new FileInputStream(in_filepath); //put filename here
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             
             String line;
@@ -26,7 +32,8 @@ public class DocFhir {
                 data = reader.processLine(line); // put a line into a DocData Element
                 if(passedFirstIteration == true && mapper.exists(data.get_NPI()) == false) //if we passed the first line and the NPI's don't match meaning we found a new doctor or first one
                 {
-                    printer.outputResource(mapper.getResource()); // before overriding, output the current resource to a file if there is one to print
+                    printer.outputResource(mapper.getResource(), out_filepath); // before overriding, output the current resource to a file if there is one to print
+                    
                     mapper.createPractitioner(data); // mapper will use all fields for the practitioner
                 }
                 else // the NPI's match so we keep adding observations to the practitioner resource
