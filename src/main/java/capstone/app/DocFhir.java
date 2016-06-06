@@ -8,13 +8,13 @@ import java.io.InputStreamReader;
 
 public class DocFhir {
 	
-	public static void convertDocGraphData(String in_filepath){
+	public static boolean convertDocGraphData(String in_filepath){
 		
-		convertDocGraphData(in_filepath, in_filepath + "-FHIR.xml");
+		return convertDocGraphData(in_filepath, in_filepath + "-FHIR.xml");
 		
 	}
 
-	public static void convertDocGraphData(String in_filepath, String out_filepath){
+	public static boolean convertDocGraphData(String in_filepath, String out_filepath){
 		DocReader reader = new DocReader();
         FhirMapper mapper = new FhirMapper();
         FhirPrinter printer = new FhirPrinter();
@@ -43,13 +43,17 @@ public class DocFhir {
                 
                 passedFirstIteration = true; // we now know there will always exist a resource from now until the end.
             }
+            return true;
+            
         } catch (FileNotFoundException e)
         {
             System.out.println("File Not Found! File Not Found Exception");
+            return false;
         }
         catch (IOException e)
         {
             System.out.println("File Not Found! IO Exception");
+            return false;
         }
 	}
 }
