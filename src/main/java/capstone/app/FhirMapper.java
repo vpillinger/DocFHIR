@@ -143,6 +143,7 @@ public class FhirMapper
     
     public void addAttributes(DocData data)
     {
+    	observations = new ArrayList<Observation>();
         Observation observation = new Observation();
         observation.setPerformer(performers);
         observation.setCode(new CodeableConceptDt("system", "average_Medicare_allowed_amt")); //according to HAPI documentation, this is where the name goes
