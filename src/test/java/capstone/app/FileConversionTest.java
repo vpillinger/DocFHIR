@@ -38,6 +38,7 @@ public class FileConversionTest extends XMLTestCase{
 						assertXMLEqual("\\test\\test outputs\\" + test_file.getName(),
 								"\\test\\test expected outputs\\" + test_file.getName());
     				}
+    				System.out.println("Success");
     			} catch (SAXException e) {
 					e.printStackTrace();
 					fail("Some failure on vserification");
