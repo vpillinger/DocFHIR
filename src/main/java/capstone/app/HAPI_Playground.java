@@ -9,12 +9,8 @@ package capstone.app;
 import ca.uhn.fhir.model.dstu2.composite.AddressDt;
 import ca.uhn.fhir.model.dstu2.composite.ContactPointDt;
 import ca.uhn.fhir.model.dstu2.composite.HumanNameDt;
-import ca.uhn.fhir.model.dstu2.composite.IdentifierDt;
-import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.Practitioner;
-import ca.uhn.fhir.model.dstu2.resource.Practitioner.PractitionerRole;
 import java.util.ArrayList;
-import java.util.List;
 
 
 
@@ -29,7 +25,7 @@ public class HAPI_Playground
         Practitioner dr = new Practitioner();
         dr.setId("1234556789");
         dr.setName(new HumanNameDt().addGiven("John").addFamily("Doe"));
-        ArrayList<AddressDt> addresses = new ArrayList();
+        ArrayList<AddressDt> addresses = new ArrayList<AddressDt>();
         addresses.add(new AddressDt());
         addresses.get(0).addLine("1408 Hitchcock Lane").setCity("Bethlehem").setState("PA").setPostalCode("12345"); //addresses can only be set in form of list
         dr.setAddress(addresses);

@@ -5,15 +5,12 @@
  */
 package capstone.app;
 
-import ca.uhn.fhir.model.api.IDatatype;
 import ca.uhn.fhir.model.dstu2.composite.AddressDt;
-import ca.uhn.fhir.model.dstu2.composite.BoundCodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.HumanNameDt;
 import ca.uhn.fhir.model.dstu2.composite.IdentifierDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.Observation;
-import ca.uhn.fhir.model.dstu2.resource.Observation.Component;
 import ca.uhn.fhir.model.dstu2.resource.Practitioner;
 import ca.uhn.fhir.model.dstu2.resource.Practitioner.PractitionerRole;
 import ca.uhn.fhir.model.dstu2.resource.Practitioner.Qualification;
@@ -40,9 +37,9 @@ public class FhirMapper
     
     public void createPractitioner(DocData data)
     {
-        ArrayList<AddressDt> addresses = new ArrayList(); //addresses requires an array argument
-        ArrayList<PractitionerRole> roles = new ArrayList(); // practitioner role resouce requires an array of roles
-        ArrayList<ResourceReferenceDt> descriptions = new ArrayList(); // practitioner healthcareServiceProvided also requires an array aof healthCareServices provided
+        ArrayList<AddressDt> addresses = new ArrayList<AddressDt>(); //addresses requires an array argument
+        ArrayList<PractitionerRole> roles = new ArrayList<PractitionerRole>(); // practitioner role resouce requires an array of roles
+        ArrayList<ResourceReferenceDt> descriptions = new ArrayList<ResourceReferenceDt>(); // practitioner healthcareServiceProvided also requires an array aof healthCareServices provided
         Qualification credential;
         
         
@@ -80,10 +77,10 @@ public class FhirMapper
             practitioner.setGender(AdministrativeGenderEnum.UNKNOWN);
         }
         
-        performers = new ArrayList(); // make the array list a new one to empty it for the new practitioner
+        performers = new ArrayList<ResourceReferenceDt>(); // make the array list a new one to empty it for the new practitioner
         performers.add(new ResourceReferenceDt(practitioner)); // put the practitioner in as a performer
         
-        observations = new ArrayList(); // clear the observations array for the new practitioner
+        observations = new ArrayList<Observation>(); // clear the observations array for the new practitioner
         
         Observation observation = new Observation();
         observation.setPerformer(performers);

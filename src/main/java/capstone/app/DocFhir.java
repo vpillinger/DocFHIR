@@ -43,6 +43,7 @@ public class DocFhir {
                 
                 passedFirstIteration = true; // we now know there will always exist a resource from now until the end.
             }
+            bufferedReader.close();
             return true;
             
         } catch (FileNotFoundException e)
