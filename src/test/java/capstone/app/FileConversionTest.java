@@ -1,26 +1,50 @@
 package capstone.app;
 
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.*;
-import static org.junit.Assert.*;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.IOException;
 
-public class RunTestCases {
+public class FileConversionTest extends XMLTestCase{
+	
+	@Before
+    public void Setup()
+    {
+		//ignore whitespace in XML
+    	XMLUnit.setIgnoreWhitespace(true);
+    }
 	
 	/**
      * Convert all files given in the testing folder. Then compare those files to the expected if one exists.
      */
     @Test
-    public void runTestFiles()
+    public void testFileConversion()
     {
+    	
     	// loop through all files in test inputs
-    	File test_dir = new File("\\test\\test inputs");
+    	File test_dir = new File("src\\test\\test inputs\\");
+    	
     	for (File test_file : test_dir.listFiles()){
-    		
+    		System.out.println(test_file.getAbsolutePath());
     		boolean file_converted = convertTestFile(test_file);
-    		
-    		if(file_converted){
-    			assertTrue(checkFileResult(test_file));
+    		//if we converted the file, and 
+    		if(file_converted ){
+    			try {
+    				// if a correct results file exists to compare
+    				if(new File("\\test\\test expected outputs\\" + test_file.getName()).exists()) {
+						assertXMLEqual("\\test\\test outputs\\" + test_file.getName(),
+								"\\test\\test expected outputs\\" + test_file.getName());
+    				}
+    			} catch (SAXException e) {
+					e.printStackTrace();
+					fail("Some failure on vserification");
+				} catch (IOException e) {
+					e.printStackTrace();
+					fail("I/O failure on verification");
+				}
     		}else{
     			fail("File not successfully converted");
     		}
@@ -29,17 +53,10 @@ public class RunTestCases {
     }
 
 	private boolean convertTestFile(File test_file){
-    	String in_path = test_file.getAbsolutePath();
-    	String out_path = in_path + "-output.xml";
+    	String out_path = "\\test\\test outputs\\" + test_file.getName();
     	
-    	return DocFhir.convertDocGraphData(in_path, out_path);
+    	return DocFhir.convertDocGraphData(test_file.getAbsolutePath(), out_path);
     		
     }
-    	
-        
-    private boolean checkFileResult(File test_file) {
-		// TODO Auto-generated method stub
-		return true;
-	}	
     
 }
