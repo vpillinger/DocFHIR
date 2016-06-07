@@ -15,7 +15,11 @@ public class FhirPrinter
 {
     public void outputResource(Practitioner dr, String Filename)
     {
-        // write resource to file
+        // open file (does it exist yet?)
+    	
+    	// append resource to end of file
+    	
+    	// close file
     }
     
 }
